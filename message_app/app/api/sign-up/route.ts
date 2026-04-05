@@ -47,11 +47,15 @@ export async function POST(request:Request){
   }
    
   // send verificaiton email
-const emailResponse =   await sendVerificationEmail({
+const emailResponse =   await sendVerificationEmail(
    email,
    userName,
    verifyCode
-  })
+  )
+if(!emailResponse.success){
+   
+}
+
 
     } catch (error) {
          console.log("Error regestring user",error)
