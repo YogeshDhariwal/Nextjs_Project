@@ -50,9 +50,9 @@ const userSchema:Schema<User> = new Schema({
         required:[true,"verify code is required"],
         unique:true
     },
-    verifyCodeExpiry:{
+   verfiyCodeExpiry:{
         type:Date,
-         required:[true,"verify code is required"]
+        required:[true,"verify code is required"]
     },
     isVerified:{
         type:Boolean,
@@ -61,4 +61,7 @@ const userSchema:Schema<User> = new Schema({
     messages:[MessageSchema]
 })
 
-export const UserModel = (mongoose.models.User as mongoose.Model<User>)|| (mongoose.model("User",userSchema))
+
+
+ const UserModel = mongoose.models.User as mongoose.Model<User> || mongoose.model("User",userSchema)
+ export default UserModel
