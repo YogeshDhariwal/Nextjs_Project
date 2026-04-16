@@ -27,6 +27,20 @@ export async function POST(request:Request){
 
 
    if(existingUserByEmail){
+      if(existingUserByEmail.isVerified){
+         return Response.json({
+         success:false,
+         message:"User is already existed with this email"
+         },{status:400})
+      }
+
+      else{
+         const hashedPassword = await bcrypt.hash(password,100)
+         existingUserByEmail.password = hashedPassword
+         existingUserByEmail.verifyCode=verifyCode
+         existingUserByEmail.verfiyCodeExpiry = new Date(Date.now()+3600000)
+         await existingUserByEmail.save()
+      }
    }
   else{
   const hashedPassword =  await bcrypt.hash(password,10)
@@ -53,9 +67,16 @@ const emailResponse =   await sendVerificationEmail(
    verifyCode
   )
 if(!emailResponse.success){
-   
+   return Response.json({
+   success:false,
+   message:emailResponse.message
+   },{status:500})
 }
 
+ return Response.json({
+   success:true,
+   message:"user registered successfully .please verify"
+   },{status:201})
 
     } catch (error) {
          console.log("Error regestring user",error)
